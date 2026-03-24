@@ -124,6 +124,8 @@ python3 main.py
 streamlit run app.py
 ```
 
+O app regenera automaticamente os arquivos processados se eles estiverem ausentes ou corrompidos.
+
 ## Testes
 
 ```bash
@@ -147,3 +149,4 @@ It uses a synthetic household-level sample inspired by the public de-identified 
 - rule-based vulnerability scoring
 - municipal prioritization indicators
 - `Streamlit` and `Plotly` for the dashboard
+- the app automatically rebuilds processed files when needed

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from json import JSONDecodeError
 
 import pandas as pd
 import plotly.express as px
@@ -27,12 +28,43 @@ st.markdown(
 )
 
 
+REQUIRED_SAMPLE_COLUMNS = {
+    "municipio",
+    "faixa_renda",
+    "situacao_cadastral",
+    "arranjo_familiar",
+    "qtd_pessoas",
+    "qtd_criancas",
+    "score_vulnerabilidade",
+}
+
+REQUIRED_PROFILE_COLUMNS = {
+    "municipio",
+    "familias_amostra",
+    "pct_extrema_pobreza",
+    "pct_cadastros_nao_atualizados",
+    "indice_priorizacao_cadastral",
+    "perfil_prioritario",
+}
+
+
 def load_data() -> tuple[dict[str, object], pd.DataFrame, pd.DataFrame]:
     if not SUMMARY_PATH.exists() or not SAMPLE_PATH.exists() or not MUNICIPAL_PROFILE_PATH.exists():
         run_pipeline()
-    summary = json.loads(SUMMARY_PATH.read_text())
-    sample_df = pd.read_csv(SAMPLE_PATH)
-    profile_df = pd.read_csv(MUNICIPAL_PROFILE_PATH)
+    try:
+        summary = json.loads(SUMMARY_PATH.read_text())
+        sample_df = pd.read_csv(SAMPLE_PATH)
+        profile_df = pd.read_csv(MUNICIPAL_PROFILE_PATH)
+    except (FileNotFoundError, JSONDecodeError, ValueError, OSError):
+        summary = run_pipeline()
+        sample_df = pd.read_csv(SAMPLE_PATH)
+        profile_df = pd.read_csv(MUNICIPAL_PROFILE_PATH)
+
+    if not REQUIRED_SAMPLE_COLUMNS.issubset(sample_df.columns) or not REQUIRED_PROFILE_COLUMNS.issubset(profile_df.columns):
+        summary = run_pipeline()
+        sample_df = pd.read_csv(SAMPLE_PATH)
+        profile_df = pd.read_csv(MUNICIPAL_PROFILE_PATH)
+
     return summary, sample_df, profile_df
 
 
