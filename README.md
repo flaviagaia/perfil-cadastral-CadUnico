@@ -115,6 +115,12 @@ O projeto classifica os municípios como:
 
 de acordo com o índice de priorização cadastral.
 
+## Dashboard
+
+Visão da interface em `Streamlit` usada para explorar renda, situação cadastral, vulnerabilidade familiar e priorização territorial:
+
+![Dashboard do projeto](assets/streamlit_dashboard.png)
+
 ## Como executar
 
 ```bash
@@ -150,3 +156,9 @@ It uses a synthetic household-level sample inspired by the public de-identified 
 - municipal prioritization indicators
 - `Streamlit` and `Plotly` for the dashboard
 - the app automatically rebuilds processed files when needed
+
+### Dashboard
+
+Streamlit interface used to explore income, registration quality, household vulnerability, and territorial prioritization:
+
+![Project dashboard](assets/streamlit_dashboard.png)
